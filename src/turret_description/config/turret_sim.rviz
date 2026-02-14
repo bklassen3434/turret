@@ -1,0 +1,60 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+  - Class: rviz_common/Views
+    Name: Views
+Visualization Manager:
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Name: Grid
+      Value: true
+      Cell Size: 1
+      Line Style:
+        Value: Lines
+      Color: 160; 160; 164
+      Plane Cell Count: 10
+    - Class: rviz_default_plugins/RobotModel
+      Name: RobotModel
+      Description Topic:
+        Value: /robot_description
+      Value: true
+    - Class: rviz_default_plugins/TF
+      Name: TF
+      Value: false
+      Show Names: false
+      Show Axes: false
+      Show Arrows: false
+      Marker Scale: 0.5
+    - Class: rviz_default_plugins/Image
+      Name: Camera Image
+      Value: true
+      Topic:
+        Value: /turret/camera/image_raw
+      Queue Size: 2
+    - Class: rviz_default_plugins/Image
+      Name: Debug Image
+      Value: true
+      Topic:
+        Value: /camera/debug_image
+      Queue Size: 2
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Target Markers
+      Value: true
+      Topic:
+        Value: /target_markers
+  Global Options:
+    Fixed Frame: base_link
+    Frame Rate: 30
+  Tools:
+    - Class: rviz_default_plugins/MoveCamera
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 3
+      Name: Current View
+      Pitch: 0.5
+      Target Frame: base_link
+      Yaw: 0.8
+Window Geometry:
+  Height: 900
+  Width: 1400
