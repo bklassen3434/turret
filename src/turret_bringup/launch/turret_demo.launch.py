@@ -17,6 +17,7 @@ import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
+from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration, Command
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
@@ -28,6 +29,7 @@ def generate_launch_description():
 
     # Launch arguments
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
+    use_rviz = LaunchConfiguration('use_rviz', default='true')
 
     # URDF file
     urdf_file = os.path.join(turret_description_dir, 'urdf', 'turret.urdf.xacro')
@@ -42,6 +44,11 @@ def generate_launch_description():
             'use_sim_time',
             default_value='false',
             description='Use simulation clock'
+        ),
+        DeclareLaunchArgument(
+            'use_rviz',
+            default_value='true',
+            description='Launch RViz visualization (set false to run headless)'
         ),
 
         # Robot state publisher (for URDF/TF)
@@ -195,12 +202,13 @@ def generate_launch_description():
             }]
         ),
 
-        # RViz for visualization
+        # RViz for visualization (optional — disable with use_rviz:=false)
         Node(
             package='rviz2',
             executable='rviz2',
             name='rviz2',
             output='screen',
+            condition=IfCondition(use_rviz),
             arguments=['-d', os.path.join(turret_description_dir, 'config', 'turret_sim.rviz')],
         ),
     ])

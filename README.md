@@ -12,7 +12,7 @@ A ROS 2 project demonstrating a pan-tilt turret that uses sensor fusion (camera 
 - **Track lifecycle management** (tentative, confirmed, coasting, lost)
 - **PID control** for smooth turret tracking of the closest confirmed target
 - **Drone silhouette rendering** with perspective scaling in the synthetic camera
-- **RViz visualization** with drone-shaped markers and track labels
+- **RViz visualization** with drone-shaped markers placed at true 3D track positions, velocity arrows, Kalman covariance ellipsoids, fading trajectory trails, and track labels
 
 ## Architecture
 
@@ -152,9 +152,19 @@ ros2 topic echo tracks
 ```
 
 In RViz you should see:
-- Two drone-shaped markers (red = primary/closest, orange = secondary)
-- Track labels showing ID, `[PRI]` tag, and range
+- Two drone-shaped markers positioned at the tracker's true 3D estimate (red = primary/closest, orange = secondary, dim yellow = coasting/predicting)
+- A blue velocity arrow on each track showing estimated heading and speed
+- A translucent covariance ellipsoid per track that shrinks as camera + radar agree (the Kalman filter converging)
+- A fading trajectory trail tracing each drone's flight path (stored in `base_link`, so it stays world-stable as the turret slews)
+- Track labels showing ID, `[PRI]` tag, range, contributing sensors (`[CR]`) and confidence
+- TF axes for the ground-truth drone frames, so you can compare estimate vs. truth
 - The turret smoothly following the closer drone and switching when the other approaches
+
+To run headless (no RViz):
+
+```bash
+ros2 launch turret_bringup turret_demo.launch.py use_rviz:=false
+```
 
 ## Topics
 
@@ -198,6 +208,12 @@ In RViz you should see:
 - `yaw_kp/ki/kd` - Yaw axis PID gains
 - `pitch_kp/ki/kd` - Pitch axis PID gains
 - `max_velocity` - Maximum joint velocity (rad/s)
+
+### Visualization parameters (`target_marker_node`)
+- `fixed_frame` - World-stable frame used for trajectory trails (default `base_link`)
+- `trail_length` - Max number of points kept per trail (default 120)
+- `trail_min_step` - Minimum move (m) before a new trail point is added (default 0.02)
+- `covariance_sigma` - Sigma multiple for the covariance ellipsoid size (default 2.0)
 
 ## Frame Conventions
 
