@@ -46,11 +46,15 @@ add_executable(target_marker_node
 target_include_directories(target_marker_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
+  ${EIGEN3_INCLUDE_DIRS}
 )
 ament_target_dependencies(target_marker_node
   rclcpp
   visualization_msgs
   geometry_msgs
+  tf2
+  tf2_ros
+  tf2_geometry_msgs
   turret_msgs
 )
 

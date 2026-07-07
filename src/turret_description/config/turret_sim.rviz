@@ -20,9 +20,9 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/TF
       Name: TF
-      Value: false
-      Show Names: false
-      Show Axes: false
+      Value: true
+      Show Names: true
+      Show Axes: true
       Show Arrows: false
       Marker Scale: 0.5
     - Class: rviz_default_plugins/Image
